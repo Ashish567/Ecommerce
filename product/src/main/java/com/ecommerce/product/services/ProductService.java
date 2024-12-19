@@ -20,6 +20,7 @@ public class ProductService {
         return productRepository.findAll();
     }
     public Product saveProduct(Product product) {
+        System.out.println(product.toString());
         return productRepository.save(product);
     }
     public void deleteProduct(Long id) {
@@ -29,8 +30,12 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id).orElse(null);
         if (existingProduct != null) {
             existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setSku(product.getSku());
             existingProduct.setQuantity(product.getQuantity());
+            existingProduct.setBrand(product.getBrand());
+            existingProduct.setActive(product.isActive());
+            existingProduct.setPrice(product.getPrice());
             return productRepository.save(existingProduct);
         }
         return null;

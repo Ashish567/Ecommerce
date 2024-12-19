@@ -1,5 +1,6 @@
 package com.ecommerce.product.exceptions;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

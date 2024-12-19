@@ -1,19 +1,18 @@
 package com.ecommerce.product.models;
 
+import com.ecommerce.product.dtos.ProductDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+
+//@NoArgsConstructor
+//@AllArgsConstructor
+@Entity
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
 public class Product extends BaseModel {
     private String name;
     private String description;
@@ -31,7 +30,9 @@ public class Product extends BaseModel {
     )
     private Set<Categories> categories;
 
-    public Product(Long id, String name, String description, int sku, int quantity, String brand, boolean isActive) {
-        super();
-    }
+
+
+//    public Product(Long id, String name, String description, int sku, int quantity, String brand, boolean isActive) {
+//        super();
+//    }
 }
