@@ -17,8 +17,19 @@ import java.util.Set;
 public class Categories extends BaseModel {
     private String name;
     private String description;
-    private boolean isActive;
+    @Column(name = "active", nullable = false)
+    private boolean active;
 
     @ManyToMany(mappedBy = "categories") // Indicates the owning side is in Product
     private Set<Product> products;
+
+    @Override
+    public String toString() {
+        return "Categories{" +
+                "active=" + active +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", products=" + products +
+                '}';
+    }
 }

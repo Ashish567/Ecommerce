@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Entity
@@ -29,4 +30,21 @@ public class Product extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id") // Foreign key to Categories
     )
     private Set<Categories> categories;
+
+    @Version
+    private Long version;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "brand='" + brand + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", sku=" + sku +
+                ", quantity=" + quantity +
+                ", isActive=" + isActive +
+                ", price=" + price +
+                ", categories=" + categories +
+                '}';
+    }
 }
