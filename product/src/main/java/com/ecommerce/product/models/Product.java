@@ -29,10 +29,4 @@ public class Product extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id") // Foreign key to Categories
     )
     private Set<Categories> categories;
-
-
-
-//    public Product(Long id, String name, String description, int sku, int quantity, String brand, boolean isActive) {
-//        super();
-//    }
 }
