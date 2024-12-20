@@ -1,14 +1,20 @@
 package com.ecommerce.product.dtos;
 
+import com.ecommerce.product.models.BaseModel;
 import com.ecommerce.product.models.Product;
-import lombok.*;
+import com.ecommerce.product.models.Categories;
+import com.ecommerce.product.repositories.CategoryRepository;
+import jdk.jfr.Category;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-@Data
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 @Getter
 @Setter
+@Data
 public class ProductDto {
     private Long id;
     private String name;
@@ -16,33 +22,47 @@ public class ProductDto {
     private int sku;
     private int quantity;
     private String brand;
-    private boolean active;
+    private boolean isActive;
     private double price;
+    private Set<Long> categoryIds; // Only the IDs of the categories
 
-
+    // Convert from entity to DTO
     public static ProductDto fromEntity(Product product) {
-        ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setDescription(product.getDescription());
-        productDto.setSku(product.getSku());
-        productDto.setQuantity(product.getQuantity());
-        productDto.setBrand(product.getBrand());
-        productDto.setActive(product.isActive());
-        productDto.setPrice(product.getPrice());
-        return productDto;
+        ProductDto dto = new ProductDto();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setDescription(product.getDescription());
+        dto.setSku(product.getSku());
+        dto.setQuantity(product.getQuantity());
+        dto.setBrand(product.getBrand());
+        dto.setActive(product.isActive());
+        dto.setPrice(product.getPrice());
+
+        // Extracting category IDs
+        Set<Long> categoryIds = product.getCategories().stream()
+                .map(BaseModel::getId)
+                .collect(Collectors.toSet());
+        dto.setCategoryIds(categoryIds);
+
+        return dto;
     }
 
+    // Convert from DTO to entity
     public Product toEntity() {
         Product product = new Product();
-        product.setId(this.id);
-        product.setName(this.name);
-        product.setDescription(this.description);
-        product.setSku(this.sku);
-        product.setQuantity(this.quantity);
-        product.setBrand(this.brand);
-        product.setActive(this.active);
-        product.setPrice(this.price);
+        product.setId(this.getId());
+        product.setName(this.getName());
+        product.setDescription(this.getDescription());
+        product.setSku(this.getSku());
+        product.setQuantity(this.getQuantity());
+        product.setBrand(this.getBrand());
+        product.setActive(this.isActive());
+        product.setPrice(this.getPrice());
+
+        product.setCategories(null);
+
+
+        // Conversion of category IDs to Category entities should be handled in the service layer
         return product;
     }
 }

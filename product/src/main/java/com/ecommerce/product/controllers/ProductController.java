@@ -43,7 +43,8 @@ public class ProductController {
     // Save a New Product
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto) {
-        Product savedProduct = productService.saveProduct(productDto.toEntity());
+        System.out.println(productDto.toString());
+        Product savedProduct = productService.saveProduct(productDto);
         return ResponseEntity.status(201).body(ProductDto.fromEntity(savedProduct));
     }
 
