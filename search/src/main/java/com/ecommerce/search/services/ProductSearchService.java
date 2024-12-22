@@ -25,11 +25,11 @@ public class ProductSearchService {
         return productRepository.findByName(name);
     }
 
-    public List<ProductDocument> searchByCategory(String category) {
-        return productRepository.findByCategory(category);
-    }
-
     public List<ProductDocument> searchByNameAndCategory(String name, String category) {
         return productRepository.findByNameAndCategory(name, category);
+    }
+
+    public List<ProductDocument> searchByCategory(String category) {
+        return productRepository.findByCategory(category);
     }
 }
