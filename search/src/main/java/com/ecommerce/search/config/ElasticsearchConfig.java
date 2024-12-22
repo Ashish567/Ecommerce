@@ -3,6 +3,8 @@ package com.ecommerce.search.config;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import org.springframework.beans.factory.annotation.Value;
+
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -13,11 +15,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ElasticsearchConfig {
+   @Value("${elastic.cloud.uri}")
+    private String CLUSTER_URL;
 
-    private static final String CLUSTER_URL = "";
-    private static final int PORT = 443;
-    private static final String SCHEME = "https";
-    private static final String API_KEY = "";
+    @Value("${elastic.cloud.port}")
+    private int PORT;
+
+    private String SCHEME = "https";
+
+   @Value("${elastic.cloud.api.key}")
+    private String API_KEY;
 
     /**
      * Configures the low-level REST client for Elasticsearch.
