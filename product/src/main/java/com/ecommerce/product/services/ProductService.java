@@ -6,6 +6,8 @@ import com.ecommerce.product.models.Product;
 import com.ecommerce.product.repositories.CategoryRepository;
 import com.ecommerce.product.repositories.ProductRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +17,21 @@ import java.util.stream.Collectors;
 
 @Service("productService")
 public class ProductService {
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
     private ProductRepository productRepository;
     private CategoryRepository categoryRepository;
-    ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, KafkaTemplate<String, String> kafkaTemplate) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
+    private static final String TOPIC = "product-to-search";
+    public void sendProductToSearch(String productDetails) {
+        kafkaTemplate.send(TOPIC, productDetails);
+    }
+
+
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
