@@ -98,8 +98,7 @@ public class ProductSearchController {
                 results = searchService.searchByName(name.trim());
             } else if (category != null && !category.trim().isEmpty()) {
                 // Add a method in your service to search by category if needed
-//                results = searchService.searchByCategory(category.trim());
-                results = List.of();
+                results = searchService.searchByCategory(category.trim());
             } else {
                 return ResponseEntity
                         .badRequest()

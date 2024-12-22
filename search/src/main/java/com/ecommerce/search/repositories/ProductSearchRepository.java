@@ -10,4 +10,6 @@ public interface ProductSearchRepository extends ElasticsearchRepository<Product
     @Query("{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}}, {\"nested\": {\"path\": \"categories\", \"query\": {\"match\": {\"categories.name\": \"?1\"}}}}]}}")
     List<ProductDocument> findByNameAndCategory(String name, String category);
     List<ProductDocument> findByName(String name);
+    @Query("{\"bool\": {\"must\": [{\"nested\": {\"path\": \"categories\", \"query\": {\"match\": {\"categories.name\": \"?0\"}}}}]}}")
+    List<ProductDocument> findByCategory(String category);
 }
