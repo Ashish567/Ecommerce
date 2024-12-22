@@ -1,16 +1,16 @@
 package com.ecommerce.search.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(indexName = "products")
@@ -19,18 +19,46 @@ public class ProductDocument {
     @Id
     private String id;
 
-    @Field(type = FieldType.Text, name = "name")
+    @Field(type = FieldType.Text)
     private String name;
 
-    @Field(type = FieldType.Text, name = "description")
+    @Field(type = FieldType.Text)
     private String description;
 
-    @Field(type = FieldType.Text, name = "category")
-    private String category;
+    @Field(type = FieldType.Integer)
+    private int sku;
 
-    @Field(type = FieldType.Double, name = "price")
-    private Double price;
+    @Field(type = FieldType.Integer)
+    private int quantity;
 
-    @Field(type = FieldType.Date, name = "createdAt")
-    private LocalDateTime createdAt;
+    @Field(type = FieldType.Text)
+    private String brand;
+
+    @Field(type = FieldType.Boolean)
+    private boolean isActive;
+
+    @Field(type = FieldType.Double)
+    private double price;
+
+    @Field(type = FieldType.Nested)
+    private Set<CategoryDocument> categories;
+
+    @Version
+    private Long version;
+
+    @Override
+    public String toString() {
+        return "ProductDocument{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", sku=" + sku +
+                ", quantity=" + quantity +
+                ", brand='" + brand + '\'' +
+                ", isActive=" + isActive +
+                ", price=" + price +
+                ", categories=" + categories +
+                ", version=" + version +
+                '}';
+    }
 }
