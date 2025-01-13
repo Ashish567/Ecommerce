@@ -1,0 +1,25 @@
+server:
+  port: 8080 # Specify the port number for the microservice
+
+spring:
+  application:
+    name: cart-microservice # Name of the application
+  data:
+    redis:
+      host: localhost
+      timeout: 2000ms
+      port: 6379
+
+logging:
+  level:
+    root: INFO # Logging level for the application
+    org.springframework.data.redis: DEBUG # Enable debugging for Redis-related operations
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Expose all management endpoints (for debugging and monitoring)
+  endpoint:
+    health:
+      show-details: always # Show detailed health check information
