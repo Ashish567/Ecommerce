@@ -26,6 +26,9 @@ jwt:
   secret: jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4
   key: JWT_SECRET
 
+authentication:
+  enabled: true
+
 server:
   port: 8082
 
