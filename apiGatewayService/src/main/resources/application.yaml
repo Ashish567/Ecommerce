@@ -1,38 +1,39 @@
 spring:
   application:
-    name: api-gateway-service
+    name: api-gateway
+
   cloud:
     gateway:
-      routes:
-        - id: user-service
-          predicates:
-            - Path=/first/
-          uri: localhost:8086
-        - id: product-service
-          predicates:
-            - Path=/process/
-          uri: localhost:8085
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+    discovery:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/your-realm # Change this to your auth server URL
 
-
-#  main:
-#    web-application-type: reactive
+server:
+  port: 8082
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    eureka-server-connect-timeout-seconds: 5
+    eureka-server-read-timeout-seconds: 5
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
 
-#logging:
-#  level:
-#    org.springframework.web.HttpLogging: TRACE
-#    reactor.netty.http.server: DEBUG
-#    reactor.netty.http.client: DEBUG
-
-jwt:
-  secret: VHKJMNnbfhbsjkdbVJHVkhbJBKJBsmfnbngygiyguFYVHJbkjnjnsjdnlkfn
-
-server:
-  port: 8081
-
-authentication:
-  enabled: false
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
