@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          predicates:
+            - Path=/first/
+          uri: localhost:8086
+        - id: product-service
+          predicates:
+            - Path=/process/
+          uri: localhost:8085
+
+
+#  main:
+#    web-application-type: reactive
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+#logging:
+#  level:
+#    org.springframework.web.HttpLogging: TRACE
+#    reactor.netty.http.server: DEBUG
+#    reactor.netty.http.client: DEBUG
+
+jwt:
+  secret: VHKJMNnbfhbsjkdbVJHVkhbJBKJBsmfnbngygiyguFYVHJbkjnjnsjdnlkfn
+
+server:
+  port: 8081
+
+authentication:
+  enabled: false
