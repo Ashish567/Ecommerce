@@ -1,6 +1,9 @@
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
 
   cloud:
     gateway:
@@ -8,13 +11,20 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
     discovery:
       enabled: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8180/realms/your-realm # Change this to your auth server URL
+    globals:
+      cors-configurations:
+        '[/**]':
+          allowedOrigins: "*"
+          allowedMethods: "*"
+          allowedHeaders: "*"
+
+jwt:
+  secret: jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4
+  key: JWT_SECRET
 
 server:
   port: 8082
@@ -37,3 +47,4 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.security: DEBUG
+    reactor.netty: DEBUG
