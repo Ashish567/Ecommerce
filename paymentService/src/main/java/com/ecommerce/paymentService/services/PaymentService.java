@@ -1,25 +1,24 @@
 package com.ecommerce.paymentService.services;
 
-
+import com.ecommerce.paymentService.dtos.InitiatePayementDto;
+import com.ecommerce.paymentService.dtos.PaymentResponseDTO;
 import com.ecommerce.paymentService.paymentgateways.PaymentGateway;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentService {
-    private PaymentGateway paymentGateway;
+    @Value("${stripe.successUrl")
+    static String apiKey;
+    private final PaymentGateway paymentGateway;
 
     public PaymentService(PaymentGateway paymentGateway) {
         this.paymentGateway = paymentGateway;
     }
-    public String initiatePayment(String email, String phoneNumber, Long amount, String orderId) {
-        /*
-        1. Call Order Service
-        2. Get Order details
-        3. Verify amount
-        4. Call PG to generate payment link
-        5. return paymentlink
-         */
-        return paymentGateway.generatePaymentLink(email, phoneNumber, amount, orderId);
-
+    public PaymentResponseDTO initiatePayment(InitiatePayementDto initiatePayementDto) throws StripeException {
+        Stripe.apiKey = apiKey;
+        return paymentGateway.generatePaymentLink(initiatePayementDto);
     }
 }
