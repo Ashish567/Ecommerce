@@ -1,0 +1,7 @@
+package com.ecommerce.notificationService.repository;
+
+import com.ecommerce.notificationService.model.Notification;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+}
