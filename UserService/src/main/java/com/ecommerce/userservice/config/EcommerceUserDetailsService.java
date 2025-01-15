@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class EcommerceUserDetailsService implements UserDetailsService {
-
     private final UserRepo userRepo;
+    public EcommerceUserDetailsService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
