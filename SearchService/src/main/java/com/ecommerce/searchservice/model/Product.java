@@ -6,15 +6,20 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@RequiredArgsConstructor
+import java.util.List;
+
+@Getter
+@Setter
+//@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Document(indexName = "products")
 public class Product {
     @JsonProperty("id")
+    @Field(type = FieldType.Long, name = "id")
     @Id
-    private String id;
+    private Long id;
 
     @JsonProperty("name")
     @Field(type = FieldType.Text, name = "name")
@@ -30,6 +35,22 @@ public class Product {
 
     @JsonProperty("category")
     @Field(type = FieldType.Keyword, name = "category")
-    private String category;
+    private List<String> category;
     @Override public String toString() { return "Product{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", description='" + description + '\'' + ", price=" + price + ", category='" + category + '\'' + '}'; }
+
+    @JsonProperty("sku")
+    @Field(type = FieldType.Integer, name = "sku")
+    private int sku;
+
+    @JsonProperty("quantity")
+    @Field(type = FieldType.Integer, name = "quantity")
+    private int quantity;
+
+    @JsonProperty("brand")
+    @Field(type = FieldType.Text, name = "brand")
+    private String brand;
+
+    @JsonProperty("isActive")
+    @Field(type = FieldType.Boolean, name = "isActive")
+    private boolean isActive;
 }
