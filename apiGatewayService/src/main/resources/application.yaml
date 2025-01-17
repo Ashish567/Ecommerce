@@ -1,53 +1,65 @@
+server:
+  port: 8082
+
 spring:
   application:
-    name: api-gateway
-  main:
-    web-application-type: reactive
-    allow-bean-definition-overriding: true
-
+    name: api-gateway-service
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: user-service-public
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/api/v1/users/login,/api/v1/users/signup
+          filters:
+            - RewritePath=/api/v1/users/(?<segment>.*), /api/v1/users/${segment}
+
+        - id: user-service-protected
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - AuthenticationFilter
+
+        - id: product-service
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/api/v1/products/**
+          filters:
+            - AuthenticationFilter
+
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-    discovery:
-      enabled: true
-    globals:
-      cors-configurations:
-        '[/**]':
-          allowedOrigins: "*"
-          allowedMethods: "*"
-          allowedHeaders: "*"
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "http://localhost:[*]"
+              - "chrome-extension://*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
 
-jwt:
-  secret: jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4
-  key: JWT_SECRET
-
-authentication:
-  enabled: true
-
-server:
-  port: 8082
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
 
 eureka:
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+    service-url:
+      defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
-    eureka-server-connect-timeout-seconds: 5
-    eureka-server-read-timeout-seconds: 5
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+    hostname: localhost
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.security: DEBUG
-    reactor.netty: DEBUG
+
+
+jwt:
+  secretkey: JWT_SECRET
+  secretval: jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4
