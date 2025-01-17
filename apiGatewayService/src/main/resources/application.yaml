@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: api-gateway-service
+    name: API-GATEWAY-SERVICE
   cloud:
     gateway:
       discovery:
@@ -12,23 +12,56 @@ spring:
           lower-case-service-id: true
       routes:
         - id: user-service-public
-          uri: lb://USERSERVICE
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/v1/users/login,/api/v1/users/signup
           filters:
             - RewritePath=/api/v1/users/(?<segment>.*), /api/v1/users/${segment}
 
         - id: user-service-protected
-          uri: lb://USERSERVICE
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/v1/users/**
           filters:
             - AuthenticationFilter
 
         - id: product-service
-          uri: lb://PRODUCT
+          uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/api/v1/products/**
+          filters:
+            - AuthenticationFilter
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+          filters:
+            - AuthenticationFilter
+
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+          filters:
+            - AuthenticationFilter
+
+        - id: cart-service
+          uri: lb://CART-SERVICE
+          predicates:
+            - Path=/api/v1/carts/**
+          filters:
+            - AuthenticationFilter
+
+        - id: search-service
+          uri: lb://SEARCH-SERVICE
+          predicates:
+            - Path=/api/v1/search/**
+          filters:
+            - AuthenticationFilter
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/v1/notifications/**
           filters:
             - AuthenticationFilter
 
