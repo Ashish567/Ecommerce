@@ -4,33 +4,18 @@ import com.ecommerce.product.dtos.ProductDto;
 import com.ecommerce.product.dtos.ProductSearchCriteria;
 import com.ecommerce.product.models.Product;
 import com.ecommerce.product.services.ProductService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-//import java.awt.print.Pageable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
-
-import lombok.Builder;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 @RestController
 @RequestMapping("/products")
@@ -44,6 +29,7 @@ public class ProductController {
     // Get Product by ID
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        System.out.println("Getting Product ID: " + id);
         try {
             Product product = productService.getProductById(id);
             ProductDto productDto = ProductDto.fromEntity(product);
@@ -52,16 +38,6 @@ public class ProductController {
             return ResponseEntity.status(404).body(null);
         }
     }
-
-    // Get All Products
-//    @GetMapping
-//    public ResponseEntity<List<ProductDto>> getProducts() {
-//        List<Product> products = productService.getProducts();
-//        List<ProductDto> productDtos = products.stream()
-//                .map(ProductDto::fromEntity)
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(productDtos);
-//    }
 
     // Save a New Product
     @PostMapping
@@ -82,7 +58,7 @@ public class ProductController {
         }
     }
 
-    // Delete a Product
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         try {
@@ -92,6 +68,7 @@ public class ProductController {
             return ResponseEntity.status(404).body("Product not found");
         }
     }
+//    Get All Products with Filters
     @GetMapping
     public ResponseEntity<Page<ProductDto>> getProducts(
             @RequestParam(required = false) List<String> categories,
@@ -111,7 +88,6 @@ public class ProductController {
                 .isActive(isActive)
                 .build();
 
-        // Create sort orders from the sort parameter
         List<Sort.Order> orders = new ArrayList<>();
         if (sort[0].contains(",")) {
             for (String sortOrder : sort) {
@@ -132,7 +108,6 @@ public class ProductController {
 
         Page<Product> products = productService.findProductsWithFilters(criteria, pageable);
         Page<ProductDto> productDtos = products.map(ProductDto::fromEntity);
-
         return ResponseEntity.ok(productDtos);
     }
 

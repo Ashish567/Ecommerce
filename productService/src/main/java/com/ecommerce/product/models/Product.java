@@ -4,9 +4,8 @@ import com.ecommerce.product.dtos.ProductDto;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 
 //@NoArgsConstructor
@@ -46,5 +45,19 @@ public class Product extends BaseModel {
                 ", price=" + price +
                 ", categories=" + categories +
                 '}';
+    }
+
+    public ProductDto toDto() {
+        ProductDto productDto = new ProductDto(id);
+        productDto.setId(this.getId());
+        productDto.setBrand(this.getBrand());
+        productDto.setName(this.getName());
+        productDto.setDescription(this.getDescription());
+        productDto.setSku(this.getSku());
+        productDto.setQuantity(this.getQuantity());
+        productDto.setActive(this.isActive());
+        productDto.setPrice(this.getPrice());
+        productDto.setCategoryIds(this.getCategories().stream().map(Categories::getId).collect(Collectors.toSet()));
+        return productDto;
     }
 }

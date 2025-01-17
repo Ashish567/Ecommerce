@@ -2,20 +2,17 @@ package com.ecommerce.product.dtos;
 
 import com.ecommerce.product.models.BaseModel;
 import com.ecommerce.product.models.Product;
-import com.ecommerce.product.models.Categories;
-import com.ecommerce.product.repositories.CategoryRepository;
-import jdk.jfr.Category;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 @Getter
 @Setter
 @Data
-public class ProductDto {
+public class ProductDto implements Serializable {
     private Long id;
     private String name;
     private String description;
@@ -25,6 +22,10 @@ public class ProductDto {
     private boolean isActive;
     private double price;
     private Set<Long> categoryIds; // Only the IDs of the categories
+    @Setter
+    private String operation;
+    public ProductDto(Long id) {}
+    public ProductDto() {}
 
     // Convert from entity to DTO
     public static ProductDto fromEntity(Product product) {

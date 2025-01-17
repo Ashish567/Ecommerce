@@ -17,5 +17,4 @@ public class ProductSearchCriteria {
     private Double minPrice;
     private Double maxPrice;
     private Boolean isActive;
-
 }

@@ -1,49 +1,55 @@
 package com.ecommerce.product.services;
 
-
-import com.ecommerce.product.dtos.ProductDto;
-import com.ecommerce.product.repositories.CategoryRepository;
-import com.ecommerce.product.repositories.ProductRepository;
-
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Predicate;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.kafka.core.KafkaTemplate;
-
-
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.ecommerce.product.models.Product;
 import com.ecommerce.product.models.Categories;
-import com.ecommerce.product.repositories.ProductRepository;
 import com.ecommerce.product.dtos.ProductSearchCriteria;
+import com.ecommerce.product.dtos.ProductDto;
+import com.ecommerce.product.repositories.CategoryRepository;
+import com.ecommerce.product.repositories.ProductRepository;
 
 @Service("productService")
 public class ProductService {
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    @Value("${spring.kafka.topic-1}")
+    private String topic1NameD;
+
+    @Value("${spring.kafka.topic-2}")
+    private String topic2NameCU;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, KafkaTemplate<String, String> kafkaTemplate) {
+    private final KafkaProducerService kafkaProducerService;
+
+    ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, KafkaProducerService kafkaProducerService) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
-        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaProducerService = kafkaProducerService;
     }
-    private static final String TOPIC = "product-to-search";
-    public void sendProductToSearch(String productDetails) {
-        kafkaTemplate.send(TOPIC, productDetails);
+
+    public <idd> void sendProductToSearch(String topic, ProductDto productDetails) {
+        System.out.println(productDetails);
+        if (topic.equals("product-to-search-topic-d")) {
+            kafkaProducerService.sendMessageD(topic, productDetails);
+        } else {
+            kafkaProducerService.sendMessageCU(topic, productDetails);
+        }
     }
 
 
@@ -67,9 +73,11 @@ public class ProductService {
             Product existingProduct = productRepository.findById(product.getId())
                     .orElseThrow(() -> new RuntimeException("Product not found: " + product.getId()));
             product.setVersion(existingProduct.getVersion()); }
+        sendProductToSearch(topic2NameCU, product.toDto());
         return productRepository.save(product);
     }
     public void deleteProduct(Long id) {
+        sendProductToSearch(topic1NameD, new ProductDto(id));
         productRepository.deleteById(id);
     }
     @Transactional
@@ -83,6 +91,7 @@ public class ProductService {
         existingProduct.setBrand(product.getBrand());
         existingProduct.setActive(product.isActive());
         existingProduct.setPrice(product.getPrice());
+        sendProductToSearch(topic2NameCU, existingProduct.toDto());
         return productRepository.save(existingProduct);
     }
 
