@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import com.ecommerce.apiGatewayService.service.JwtService;
+import com.ecommerce.apiGatewayService.filter.RouterValidator;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
-    private RouterValidator routerValidator;
-    private JwtService jwtService;
 
-    public AuthenticationFilter(RouterValidator routerValidator, JwtService jwtService) {
-        this.routerValidator = routerValidator;
-        this.jwtService = jwtService;
-    }
+    @Autowired
+    private RouterValidator routerValidator;
+
+    @Autowired
+    private JwtService jwtService;
 
     public AuthenticationFilter() {
         super(Config.class);
@@ -27,14 +27,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            System.out.println("AuthenticationFilter");
-            System.out.println(exchange.getRequest().getHeaders());
-            System.out.println(routerValidator.isSecured.test(exchange.getRequest()));
             if (routerValidator.isSecured.test(exchange.getRequest())) {
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED);
                 }
-
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);

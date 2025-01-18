@@ -5,6 +5,11 @@ spring:
   application:
     name: API-GATEWAY-SERVICE
   cloud:
+    loadbalancer:
+      cache:
+        enabled: true
+    discovery:
+      enabled: true
     gateway:
       discovery:
         locator:
@@ -31,6 +36,8 @@ spring:
             - Path=/api/v1/products/**
           filters:
             - AuthenticationFilter
+
+
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
@@ -87,11 +94,29 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+    healthcheck:
+      enabled: true
   instance:
     prefer-ip-address: true
     hostname: localhost
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
 
+ribbon:
+  eureka:
+    enabled: true
+    ConnectTimeout: 3000
+    ReadTimeout: 60000
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 1
 
+logging:
+  level:
+    com.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
+    org.springframework.web.reactive: DEBUG
 
 jwt:
   secretkey: JWT_SECRET
