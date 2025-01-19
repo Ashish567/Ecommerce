@@ -1,4 +1,11 @@
-FROM ubuntu:latest
-LABEL authors="HP"
+FROM eclipse-temurin:17-jdk-focal
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]

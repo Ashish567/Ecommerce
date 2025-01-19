@@ -1,7 +1,8 @@
 server:
   port: 8081 # Set a unique port for the service
-
 spring:
+  application:
+    name: ORDER-SERVICE # Set the service name
   datasource:
     url: jdbc:mysql://localhost:3306/order_db
     username: root
@@ -22,6 +23,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: notification-group
+
 
 logging:
   level:

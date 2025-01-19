@@ -3,6 +3,7 @@ package com.ecommerce.searchservice.service;
 import com.ecommerce.searchservice.model.Product;
 import com.ecommerce.searchservice.repository.ProductRepository;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
@@ -49,11 +50,11 @@ public class ProductService {
         SearchHits<Product> searchHits = elasticsearchOperations.search(criteriaQuery, Product.class);
 
         return searchHits.getSearchHits().stream()
-                .map(hit -> hit.getContent())
+                .map(SearchHit::getContent)
                 .collect(Collectors.toList());
     }
 
-public List<Product> findByCategory(String category) {
+public List<Product> findByCategory(List<String> category) {
     return productRepository.findByCategory(category);
 }
 

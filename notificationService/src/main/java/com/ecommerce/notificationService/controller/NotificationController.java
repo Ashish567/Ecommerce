@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/notifications/")
 public class NotificationController {
     private final KafkaProducerService kafkaProducerService;
     public NotificationController(KafkaProducerService kafkaProducerService) {

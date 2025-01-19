@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/products/")
 public class ProductController {
     private final ProductService productService;
     ProductController(ProductService productService) {
@@ -34,7 +34,7 @@ public class ProductController {
     }
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
-        return ResponseEntity.ok(productService.findByCategory(category));
+        return ResponseEntity.ok(productService.findByCategory(List.of(category)));
     }
 
     @GetMapping("/price-range")

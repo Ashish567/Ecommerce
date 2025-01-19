@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cart-microservice # Name of the application
+    name: CART-SERVICE # Name of the application
   data:
     redis:
       host: localhost
