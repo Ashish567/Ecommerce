@@ -59,9 +59,9 @@
             <version>3.2.0</version>
             <executions>
                 <execution>
-                    <phase>package</phase>
+                    <phase>initialize</phase>
                     <goals>
-                        <goal>jar</goal>
+                        <goal>clean</goal>
                     </goals>
                 </execution>
             </executions>
