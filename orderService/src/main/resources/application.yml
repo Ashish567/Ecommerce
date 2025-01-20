@@ -4,9 +4,9 @@ spring:
   application:
     name: ORDER-SERVICE # Set the service name
   datasource:
-    url: jdbc:mysql://localhost:3306/order_db
-    username: root
-    password: 1234
+    url: ${AWS_RDS_URL}/order_db
+    username: ${AWS_RDS_USERNAME}
+    password: ${AWS_RDS_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
