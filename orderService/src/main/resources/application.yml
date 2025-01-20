@@ -1,5 +1,5 @@
 server:
-  port: 8081 # Set a unique port for the service
+  port: 8089 # Set a unique port for the service
 spring:
   application:
     name: ORDER-SERVICE # Set the service name
