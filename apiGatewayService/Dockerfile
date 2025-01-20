@@ -1,11 +1,13 @@
-FROM eclipse-temurin:17-jdk-focal
+FROM openjdk:17-jdk-slim
 
+# Set working directory
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+# Copy the built JAR file
+COPY target/spring-cloud-gateway-overview-1.0.0.jar /app/apiGatewayService.jar
 
-COPY src ./src
+# Expose the service port
+EXPOSE 8083
 
-CMD ["./mvnw", "spring-boot:run"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app/apiGatewayService.jar"]

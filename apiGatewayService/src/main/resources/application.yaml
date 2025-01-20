@@ -91,14 +91,14 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URI}
     fetch-registry: true
     register-with-eureka: true
     healthcheck:
       enabled: true
   instance:
     prefer-ip-address: true
-    hostname: localhost
+    hostname: ${EUREKA_INSTANCE_HOSTNAME}
     lease-renewal-interval-in-seconds: 30
     lease-expiration-duration-in-seconds: 90
 
@@ -119,5 +119,5 @@ logging:
     org.springframework.web.reactive: DEBUG
 
 jwt:
-  secretkey: JWT_SECRET
-  secretval: jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4
+  secretkey: ${JWT_SECRET}
+  secretval: ${JWT_SECRET_VALUE}

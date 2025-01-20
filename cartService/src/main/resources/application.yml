@@ -6,7 +6,7 @@ spring:
     name: CART-SERVICE # Name of the application
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST:localhost} # Redis server host
       timeout: 2000ms
       port: 6379
 

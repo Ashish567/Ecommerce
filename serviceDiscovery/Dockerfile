@@ -1,11 +1,13 @@
-FROM eclipse-temurin:17-jdk-focal
+FROM openjdk:17-jdk-slim
 
+# Set working directory
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+# Copy the built JAR file
+COPY target/serviceDiscovery-0.0.1-SNAPSHOT.jar /app/serviceDiscovery.jar
 
-COPY src ./src
+# Expose the service port
+EXPOSE 8082
 
-CMD ["./mvnw", "spring-boot:run"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app/serviceDiscovery.jar"]
