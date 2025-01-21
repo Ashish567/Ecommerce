@@ -5,8 +5,8 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-#    service-url:
-#      defaultZone: ${EUREKA_URI}
+    service-url:
+      defaultZone: ${EUREKA_URI}
   server:
     wait-time-in-ms-when-sync-empty: 0
     enable-self-preservation: false
@@ -19,4 +19,4 @@ spring:
     config:
       enabled: false
   application:
-    name: eureka-server
+    name: EUREKA-SERVER

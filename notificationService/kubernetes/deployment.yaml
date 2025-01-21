@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: NOTIFICATION-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: NOTIFICATION-SERVICE
+  template:
+    metadata:
+      labels:
+        app: NOTIFICATION-SERVICE
+    spec:
+      containers:
+        - name: NOTIFICATION-SERVICE
+          image: notification-service:latest
+          ports:
+            - containerPort: 8084
+          env:
+            - name: EMAIL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: email-config
+                  key: email-username
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: email-config
+                  key: email-password
+            - name: KAFKA_SERVERS
+              value: kafka:9092

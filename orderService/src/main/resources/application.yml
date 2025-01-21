@@ -1,5 +1,5 @@
 server:
-  port: 8089 # Set a unique port for the service
+  port: 8085 # Set a unique port for the service
 spring:
   application:
     name: ORDER-SERVICE # Set the service name
@@ -15,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
   kafka:
-    bootstrap-servers: localhost:9092 # Kafka broker address
+    bootstrap-servers: ${KAFKA_SERVERS} # Kafka broker address
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer

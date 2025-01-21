@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: CART-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: CART-SERVICE
+  template:
+    metadata:
+      labels:
+        app: CART-SERVICE
+    spec:
+      containers:
+        - name: CART-SERVICE
+          image: cart-service:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-config
+                  key: uri
+            - name: KAFKA_SERVERS
+              value: kafka:9092

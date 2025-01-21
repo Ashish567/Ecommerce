@@ -1,0 +1,20 @@
+# skaffold.yaml
+apiVersion: skaffold/v2beta28
+kind: Config
+build:
+  artifacts:
+    - image: product-service
+      buildpacks:
+        builder: paketobuildpacks/builder:base
+        env:
+          - BP_JAVA_VERSION=17
+    - image: order-service
+      buildpacks:
+        builder: paketobuildpacks/builder:base
+        env:
+          - BP_JAVA_VERSION=17
+deploy:
+  kubectl:
+    remoteManifests:
+      - kubernetes/common/*.yaml
+      - kubernetes/services/*.yaml

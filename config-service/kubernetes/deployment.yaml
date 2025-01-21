@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: CONFIG-SERVER
+  template:
+    metadata:
+      labels:
+        app: CONFIG-SERVER
+    spec:
+      containers:
+        - name: product-service
+          image: config-server:latest
+          ports:
+            - containerPort: 8083
+          env:
+#            - name: MONGODB_URI
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: mongodb-config
+#                  key: uri
+#            - name: KAFKA_SERVERS
+#              value: kafka:9092
+            - name: EUREKA_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-config
+                  key: uri
+            - name: EUREKA_INSTANCE_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-config
+                  key: hostname
+            - name: GITHUB_PASSWORD
+              valueFrom:
+                    secretKeyRef:
+                        name: github-secret
+                        key: password

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   application:
@@ -96,6 +96,7 @@ eureka:
     register-with-eureka: true
     healthcheck:
       enabled: true
+    eureka-server-connect-timeout-seconds: 3000
   instance:
     prefer-ip-address: true
     hostname: ${EUREKA_INSTANCE_HOSTNAME}
@@ -105,10 +106,6 @@ eureka:
 ribbon:
   eureka:
     enabled: true
-    ConnectTimeout: 3000
-    ReadTimeout: 60000
-    MaxAutoRetries: 1
-    MaxAutoRetriesNextServer: 1
 
 logging:
   level:

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: PRODUCT-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: PRODUCT-SERVICE
+  template:
+    metadata:
+      labels:
+        app: PRODUCT-SERVICE
+    spec:
+      containers:
+        - name: PRODUCT-SERVICE
+          image: product-service:latest
+          ports:
+            - containerPort: 8087
+          env:
+            - name: AWS_RDS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: aws-rds-config
+                  key: uri
+            - name: AWS_RDS_USERNAME
+              valueFrom:
+                  secretKeyRef:
+                    name: aws-rds-secret
+                    key: username
+            - name: AWS_RDS_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: aws-rds-secret
+                    key: password
+            - name: EUREKA_URI
+              valueFrom:
+                configMapKeyRef:
+                  key: uri
+                  name: eureka-config
+            - name: EUREKA_INSTANCE_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: hostname
+                  name: eureka-config
+            - name: KAFKA_SERVERS
+              value: kafka:9092

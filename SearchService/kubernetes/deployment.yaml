@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: SEARCH-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: SEARCH-SERVICE
+  template:
+    metadata:
+      labels:
+        app: SEARCH-SERVICE
+    spec:
+      containers:
+        - name: SEARCH-SERVICE
+          image: search-service:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: ELASTICSEARCH_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-config
+                  key: uri
+            - name: EUREKA_URI
+              valueFrom:
+                  configMapKeyRef:
+                    name: eureka-config
+                    key: uri
+            - name: EUREKA_INSTANCE_IP_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  key: ip
+                  name: eureka-config
+            - name: KAFKA_SERVERS
+              value: kafka:9092

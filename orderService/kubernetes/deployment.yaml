@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ORDER-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ORDER-SERVICE
+  template:
+    metadata:
+      labels:
+        app: ORDER-SERVICE
+    spec:
+      containers:
+        - name: product-service
+          image: order-service:latest
+          ports:
+            - containerPort: 8085
+          env:
+            - name: AWS_RDS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: aws-rds-config
+                  key: uri
+            - name: AWS_RDS_USERNAME
+              valueFrom:
+                    secretKeyRef:
+                     name: aws-rds-username
+                     key: username
+            - name: AWS_RDS_PASSWORD
+              valueFrom:
+                      secretKeyRef:
+                       name: aws-rds-password
+                       key: password
+            - name: KAFKA_SERVERS
+              value: kafka:9092

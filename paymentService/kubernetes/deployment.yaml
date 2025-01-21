@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: PAYMENT-SERVICE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: PAYMENT-SERVICE
+  template:
+    metadata:
+      labels:
+        app: PAYMENT-SERVICE
+    spec:
+      containers:
+        - name: PAYMENT-SERVICE
+          image: payment-service:latest
+          ports:
+            - containerPort: 8086
+          env:
+            - name: CLIENT_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-config
+                  key: uri
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: secret
+            - name: KAFKA_SERVERS
+              value: kafka:9092
