@@ -1,13 +1,4 @@
-FROM openjdk:17-jdk-slim
-
-# Set working directory
-WORKDIR /app
-
-# Copy the built JAR file
-COPY target/UserService-0.0.1-SNAPSHOT.jar /app/UserService.jar
-
-# Expose the service port
-EXPOSE 8081
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "/app/UserService.jar"]
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
