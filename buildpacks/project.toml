@@ -1,0 +1,14 @@
+[project]
+id = "com.ecommerce"
+name = "ecommerce"
+version = "1.0.0"
+
+[[buildpacks]]
+
+[build]
+builder = "paketobuildpacks/builder:base"
+
+
+[[build.env]]
+name = "BP_JAVA_VERSION"
+value = "17"

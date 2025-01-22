@@ -4,8 +4,8 @@ services:
   # Infrastructure Services
   eureka-server:
     build:
-      context: ./serviceDiscovery
-      dockerfile: Dockerfile
+      context: ../serviceDiscovery
+      dockerfile: ../serviceDiscovery/Dockerfile
     ports:
       - "8761:8761"
     healthcheck:
@@ -16,8 +16,8 @@ services:
 
   api-gateway:
     build:
-      context: ./apiGatewayService
-      dockerfile: Dockerfile
+      context: ../apiGatewayService
+      dockerfile: ../apiGatewayService/Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -41,7 +41,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ecommerce
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -76,8 +76,8 @@ services:
   # Business Services
   product-service:
     build:
-      context: ./productService
-      dockerfile: Dockerfile
+      context: ../productService
+      dockerfile: ../productService/Dockerfile
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -91,8 +91,8 @@ services:
 
   order-service:
     build:
-      context: ./orderService
-      dockerfile: Dockerfile
+      context: ../orderService
+      dockerfile: ../orderService/Dockerfile
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -110,8 +110,8 @@ services:
 
   payment-service:
     build:
-      context: ./paymentService
-      dockerfile: Dockerfile
+      context: ../paymentService
+      dockerfile: ../paymentService/Dockerfile
     depends_on:
       eureka-server:
         condition: service_healthy
