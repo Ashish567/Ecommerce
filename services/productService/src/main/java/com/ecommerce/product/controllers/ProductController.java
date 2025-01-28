@@ -1,10 +1,12 @@
 package com.ecommerce.product.controllers;
 
+import com.ecommerce.product.config.ClientConfig;
 import com.ecommerce.product.dtos.ProductDto;
 import com.ecommerce.product.dtos.ProductSearchCriteria;
 import com.ecommerce.product.models.Product;
 import com.ecommerce.product.services.ProductService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +23,16 @@ import java.util.List;
 @RequestMapping("api/v1/products")
 public class ProductController {
     private final ProductService productService;
+    @Autowired
+    private ClientConfig config;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
+    @GetMapping("/load")
+    public String load() {
+        return String.format(config.getMessage(), "", "");
+    }
     // Get Product by ID
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {

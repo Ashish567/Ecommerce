@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-service
+data:
+  application.properties: |-
+    bean.message=Testing reload! Message from backend is: %s <br/> Services : %s
+  product.database: "jdbc:mysql://database-1.c9y6ewmuiy00.eu-north-1.rds.amazonaws.com:3306/productMicroservice"

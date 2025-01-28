@@ -28,3 +28,18 @@ spring:
 logging:
   level:
     org.hibernate.SQL: DEBUG
+
+
+
+#server:
+#  port: 8082
+#spring:
+#  application:
+#    name: order-service
+#  cloud:
+#    config:
+#      uri: http://config-server:8888
+#  datasource:
+#    url: jdbc:mysql://mysql:3306/ecommerce
+#    username: root
+#    password: root

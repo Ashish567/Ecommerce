@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Gradle ###
+**/secrets/
+**/*.secret.yml
+**/*.secrets.yml
+**/*.client-config.yml
+**/application-secret.yml
+**/application-secret.properties

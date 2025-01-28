@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: PRODUCT-SERVICE
+  name: product-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: PRODUCT-SERVICE
+      app: product-service
   template:
     metadata:
       labels:
-        app: PRODUCT-SERVICE
+        app: product-service
     spec:
       containers:
-        - name: PRODUCT-SERVICE
+        - name: product-service
           image: product-service:latest
           ports:
             - containerPort: 8087
@@ -21,27 +21,27 @@ spec:
             - name: AWS_RDS_URL
               valueFrom:
                 configMapKeyRef:
-                  name: aws-rds-config
-                  key: uri
+                  name: product-service
+                  key: product.database
             - name: AWS_RDS_USERNAME
               valueFrom:
-                  secretKeyRef:
-                    name: aws-rds-secret
-                    key: username
+                secretKeyRef:
+                  name: db-secret
+                  key: username
             - name: AWS_RDS_PASSWORD
               valueFrom:
-                  secretKeyRef:
-                    name: aws-rds-secret
-                    key: password
-            - name: EUREKA_URI
-              valueFrom:
-                configMapKeyRef:
-                  key: uri
-                  name: eureka-config
-            - name: EUREKA_INSTANCE_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: hostname
-                  name: eureka-config
+                secretKeyRef:
+                  name: db-secret
+                  key: password
+            #            - name: EUREKA_URI
+            #              valueFrom:
+            #                configMapKeyRef:
+            #                  key: uri
+            #                  name: eureka-config
+            #            - name: EUREKA_INSTANCE_HOSTNAME
+            #              valueFrom:
+            #                configMapKeyRef:
+            #                  key: hostname
+            #                  name: eureka-config
             - name: KAFKA_SERVERS
               value: kafka:9092

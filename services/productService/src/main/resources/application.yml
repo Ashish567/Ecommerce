@@ -1,0 +1,36 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: PRODUCT-SERVICE
+  datasource:
+    url: ${AWS_RDS_URL}
+    username: ${AWS_RDS_USERNAME}
+    password: ${AWS_RDS_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: dev
+  kafka:
+    topic-1: product-to-search-topic-d
+    topic-2: product-to-search-topic-cu
+    bootstrap-servers: ${KAFKA_SERVERS}
+    consumer:
+      group-id: product-group
+      auto-offset-reset: earliest
+#  cloud:
+#    kubernetes:
+#      ribbon:
+
+
+#eureka.client.service-url.defaultZone=${EUREKA_URI}
+#eureka.instance.ip-address=true
+#eureka.instance.hostname=${EUREKA_INSTANCE_HOSTNAME}

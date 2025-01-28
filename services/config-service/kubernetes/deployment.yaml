@@ -1,42 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-service
+  name: config-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: CONFIG-SERVER
+      app: config-service
   template:
     metadata:
       labels:
-        app: CONFIG-SERVER
+        app: config-service
     spec:
       containers:
-        - name: product-service
-          image: config-server:latest
+        - name: config-service
+          image: config-service:latest
           ports:
             - containerPort: 8083
           env:
-#            - name: MONGODB_URI
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: mongodb-config
-#                  key: uri
-#            - name: KAFKA_SERVERS
-#              value: kafka:9092
-            - name: EUREKA_URI
-              valueFrom:
-                configMapKeyRef:
-                  name: eureka-config
-                  key: uri
-            - name: EUREKA_INSTANCE_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: eureka-config
-                  key: hostname
-            - name: GITHUB_PASSWORD
-              valueFrom:
-                    secretKeyRef:
-                        name: github-secret
-                        key: password
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"

@@ -1,41 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: API-GATEWAY-SERVICE
+  name: api-gateway
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: API-GATEWAY-SERVICE
+      app: api-gateway
   template:
     metadata:
       labels:
-        app: API-GATEWAY-SERVICE
+        app: api-gateway
     spec:
       containers:
-        - name: API-GATEWAY-SERVICE
-          image: api-gateway-service:latest
+        - name: api-gateway
+          image: api-gateway:latest
           ports:
             - containerPort: 8081
           env:
-#            - name: MONGODB_URI
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: mongodb-config
-#                  key: uri
-#            - name: KAFKA_SERVERS
-#              value: kafka:9092
-            - name: EUREKA_URI
-              value: ghj
-            - name: EUREKA_INSTANCE_HOSTNAME
-              value: ghjgj
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret-key
-                  key: secret-key
-            - name: JWT_SECRET_VALUE
-              valueFrom:
-                    secretKeyRef:
-                      name: jwt-secret-value
-                      key: secret-value
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"

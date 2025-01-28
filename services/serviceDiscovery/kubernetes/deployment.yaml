@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: EUREKA-SERVER
+  name: service-discovery
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: EUREKA-SERVER
+      app: service-discovery
   template:
     metadata:
       labels:
-        app: EUREKA-SERVER
+        app: service-discovery
     spec:
       containers:
-        - name: EUREKA-SERVER
-          image: eureka-service:latest
+        - name: service-discovery
+          image: service-discovery:latest
           ports:
             - containerPort: 8761
